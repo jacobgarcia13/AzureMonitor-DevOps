@@ -1,8 +1,8 @@
 # AzureMonitor-DevOps
 
-Sample Proof of Concept of an Environment for Azure Monitoring at Scale with Azure DevOps and Azure Policy
+Sample Proof of Concept Azure Monitoring Environment at Scale Using Azure DevOps and Azure Policy
 
-## Overview
+## Overview Of Architecture
 
 ![Architecture](https://github.com/jacobgarcia13/AzureMonitor-DevOps/blob/main/Monitoring_POC_Architecture1.PNG?raw=true)
 
