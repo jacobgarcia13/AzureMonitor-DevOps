@@ -1,14 +1,16 @@
 # AzureMonitor-DevOps
 
-Proof of Concept For Azure Monitoring at Scale with Azure DevOps and Policy
+Sample Proof of Concept of an Environment for Azure Monitoring at Scale with Azure DevOps and Azure Policy
 
 ## Overview
+
+![Architecture](https://github.com/jacobgarcia13/AzureMonitor-DevOps/blob/main/Monitoring_POC_Architecture.PNG?raw=true)
 
 ## License
 
 MIT License
 
-Copyright (c) 2021 jacobgarcia13
+Copyright (c) 2021 Jacob Garcia
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
