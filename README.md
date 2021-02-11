@@ -6,6 +6,18 @@ Sample Proof of Concept Azure Monitoring Environment at Scale Using Azure DevOps
 
 ![Architecture](https://github.com/jacobgarcia13/AzureMonitor-DevOps/blob/main/Monitoring_POC_Architecture1.PNG?raw=true)
 
+## Pieces of the Architecture 
+
+1. Create Management Groups hiearchy to mirror above architecture
+
+2. Create Log Analytics Workspace in Resource Group dedicated to monitoring
+
+3. Set Azure Policy to enforce collection of diagnostic logs (in this case for SQL resources) at Management group level
+
+4. Leverage Azure DevOps for Alerts, Policy (optional), and Workbooks (optional) or other visualizations) as code
+
+5. Create Action Group(s) in Resource Group dedicated to monitoring either using ARM templates or Manually
+
 ## License
 
 MIT License
