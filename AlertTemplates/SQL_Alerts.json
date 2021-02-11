@@ -1,0 +1,55 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "scheduledqueryrules_sqlstorageover70": {
+            "defaultValue": "",
+            "type": "String"
+        },
+        "loganalytics_workspaceid": {
+            "defaultValue": "",
+            "type": "String"
+        },
+        "actionGroups": {
+            "defaultValue": "",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "microsoft.insights/scheduledqueryrules",
+            "apiVersion": "2018-04-16",
+            "name": "[parameters('scheduledqueryrules_sqlstorageover70')]",
+            "location": "eastus 2",
+            "properties": {
+                "description": "Send alert of threshold reached for service health sqlstorage over 70",
+                "enabled": "True",
+                "source": {
+                    "query": "AzureMetrics | where ( ResourceProvider == 'MICROSOFT.SQL' ) | where MetricName == 'storage_percent' | summarize AggregatedValue = avg(Average) by Resource,  bin(TimeGenerated, 5m)| where AggregatedValue >= 70",
+                    "dataSourceId": "[parameters('loganalytics_workspaceid')]",
+                    "queryType": "ResultCount"
+                },
+                "schedule": {
+                    "frequencyInMinutes": 5,
+                    "timeWindowInMinutes": 60
+                },
+                "action": {
+                    "severity": "1",
+                    "aznsAction": {
+                        "actionGroup": [
+                            "[parameters('actionGroups')]"
+                        ],
+                        "emailSubject": "WARNING ALERT: Azure SQL Storage Percentage Over 70"
+                    },
+                    "throttlingInMin": 60,
+                    "trigger": {
+                        "thresholdOperator": "GreaterThan",
+                        "threshold": 1
+                    },
+                    "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction"
+                }
+            }
+        }
+    ]
+}
