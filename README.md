@@ -6,7 +6,7 @@ Sample Proof of Concept Azure Monitoring Environment at Scale Using Azure DevOps
 
 ![Architecture](https://github.com/jacobgarcia13/AzureMonitor-DevOps/blob/main/Monitoring_POC_Architecture1.PNG?raw=true)
 
-## Pieces of the Architecture 
+## Replicating the Architecture 
 
 1. Create Management Groups hiearchy to mirror above architecture
 
