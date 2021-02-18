@@ -1,0 +1,115 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "alertName": {
+            "type": "String",
+            "metadata": {
+                "description": "Name of the Log Alert"
+            }
+        },
+        "alertLocation" : {
+            "type": "String",
+            "defaultValue": "global",
+            "metadata": {
+                "description": "Location of the Log Alert"
+            }
+        },
+        "isEnabled": {
+            "type": "bool",
+            "defaultValue": "true",
+            "metadata": {
+                "description": "Rule enabled by default"
+            }
+        },
+        "kqlAlertQuery": {
+            "type": "string",
+            "metadata": {
+                "description": "KQL Log query the Alert will be based upon"
+            }
+        },
+        "centralizedActivitylogWorkspace": {
+            "type": "String",
+            "metadata": {
+                "description": "ResourceID of Workspace to be used"
+            }
+        },
+        "frequencyInMinutes": {
+            "type": "int",
+            "defaultValue": "5",
+            "metadata": {
+                "description": "frequency (in minutes) at which rule condition should be evaluated"
+            }
+        },
+        "timeWindowInMinutes": {
+            "type": "int",
+            "defaultValue": "60",
+            "metadata": {
+                "description": "Time window for which data needs to be fetched for query (should be greater than or equal to frequencyInMinutes)."
+            }
+        },
+        "alertSeverity": {
+            "type": "int",
+            "defaultValue": 3,
+            "allowedValues": [
+                0,
+                1,
+                2,
+                3,
+                4
+            ],
+            "metadata": {​
+                "description": "Severity of alert {​0,1,2,3,4}​"
+            }​
+        }​,
+        "actionGroupId": {
+            "type": "String",
+            "metadata": {
+                "description": "The ID of the action group that is triggered when the alert is activated or deactivated"
+            }
+        },
+        "throttlingInMin": {
+            "type": "int",
+            "defaultValue": "60",
+            "metadata": {
+                "description": "Time in Minutes alerts to action group will be suppressed"
+            }
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "microsoft.insights/scheduledqueryrules",
+            "apiVersion": "2018-04-16",
+            "name": "[parameters('alertName')]",
+            "location": "[parameters('alertLocation')]",
+            "properties": {
+                "enabled": "[parameters('isEnabled')]",
+                "source": {
+                    "query": "[parameters('kqlAlertQuery')]",
+                    "authorizedResources": [],
+                    "dataSourceId": "[parameters('centralizedActivitylogWorkspace')]",
+                    "queryType": "ResultCount"
+                },
+                "schedule": {
+                    "frequencyInMinutes": "[parameters('frequencyInMinutes')]",
+                    "timeWindowInMinutes": "[parameters('timeWindowInMinutes')]"
+                },
+                "action": {
+                    "severity": "[parameters('alertSeverity')]",
+                    "aznsAction": {
+                        "actionGroup": [
+                            "[parameters('actionGroupId')]"
+                        ]
+                    },
+                    "throttlingInMin": "[parameters('throttlingInMin')]",
+                    "trigger": {
+                        "thresholdOperator": "GreaterThan",
+                        "threshold": 1
+                    },
+                    "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction"
+                }
+            }
+        }
+    ]
+}
