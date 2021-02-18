@@ -1,6 +1,6 @@
 # AzureMonitor-DevOps
 
-Sample Azure Monitoring Environment at Scale Using Azure DevOps and Azure Policy
+Sample Azure Monitoring Environment For SQL at Scale Using Azure DevOps and Azure Policy 
 
 ## Overview Of Architecture
 
