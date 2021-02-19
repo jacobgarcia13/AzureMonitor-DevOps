@@ -1,18 +1,18 @@
 {
-      "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "alertName": {
-            "value": "CreateUpdate-SQL-DB"
-        },
-        "isEnabled": {
-            "value": "True"
-        },
-        "kqlAlertQuery": {
-            "value": "AzureActivity\r\n| where CategoryValue == 'Administrative'  \r\nand OperationNameValue == 'MICROSOFT.SQL/SERVERS/DATABASES/WRITE'\n"
-        },
-        "alertSeverity": {
-            "value": "0"
-        }​
+      "alertName": {
+        "value": "CreateUpdate-SQL-DB"
+      },
+      "isEnabled": {
+        "value": true
+      },
+      "kqlAlertQuery": {
+        "value": "AzureActivity\r\n| where CategoryValue == 'Administrative'  \r\nand OperationNameValue == 'MICROSOFT.SQL/SERVERS/DATABASES/WRITE'\n"
+      },
+      "alertSeverity": {
+        "value": 0
+      }
     }
 }

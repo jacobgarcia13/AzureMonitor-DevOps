@@ -10,7 +10,7 @@
         },
         "alertLocation" : {
             "type": "String",
-            "defaultValue": "global",
+            "defaultValue": "eastus 2",
             "metadata": {
                 "description": "Location of the Log Alert"
             }
@@ -36,32 +36,26 @@
         },
         "frequencyInMinutes": {
             "type": "int",
-            "defaultValue": "5",
+            "defaultValue": 5,
             "metadata": {
                 "description": "frequency (in minutes) at which rule condition should be evaluated"
             }
         },
         "timeWindowInMinutes": {
             "type": "int",
-            "defaultValue": "60",
+            "defaultValue": 60,
             "metadata": {
                 "description": "Time window for which data needs to be fetched for query (should be greater than or equal to frequencyInMinutes)."
             }
         },
         "alertSeverity": {
             "type": "int",
-            "defaultValue": 3,
-            "allowedValues": [
-                0,
-                1,
-                2,
-                3,
-                4
-            ],
-            "metadata": {​
-                "description": "Severity of alert {​0,1,2,3,4}​"
-            }​
-        }​,
+            "defaultValue": "3",
+            "allowedValues": [0,1,2,3,4],
+            "metadata": {
+                "description": "description"
+            }
+        },
         "actionGroupId": {
             "type": "String",
             "metadata": {
@@ -70,7 +64,7 @@
         },
         "throttlingInMin": {
             "type": "int",
-            "defaultValue": "60",
+            "defaultValue": 60,
             "metadata": {
                 "description": "Time in Minutes alerts to action group will be suppressed"
             }
