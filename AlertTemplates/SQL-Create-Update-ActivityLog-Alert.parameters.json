@@ -9,7 +9,7 @@
         "value": true
       },
       "kqlAlertQuery": {
-        "value": "AzureActivity\r\n| where CategoryValue == 'Administrative'  \r\nand OperationNameValue == 'MICROSOFT.SQL/SERVERS/DATABASES/WRITE'\n"
+        "value": "AzureActivity | where CategoryValue == 'Administrative' and OperationNameValue == 'MICROSOFT.SQL/SERVERS/DATABASES/WRITE'"
       },
       "alertSeverity": {
         "value": 0
