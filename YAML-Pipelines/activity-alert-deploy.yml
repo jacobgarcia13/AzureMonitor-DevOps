@@ -9,7 +9,7 @@ trigger:
 pool:
   vmImage: vs2017-win2016
 
-#Your build pipeline references a secret variable named ‘workspaceID’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references a secret variable named 'ResourceGroupName'. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
 #Your build pipeline references a secret variable named ‘workspaceID’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
 #Your build pipeline references a secret variable named ‘actionGroupId’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
 
@@ -17,7 +17,7 @@ steps:
 - task: AzurePowerShell@5
   displayName: 'Azure PowerShell script: InlineScript'
   inputs:
-    azureSubscription: 'Centralized_LogRG-ServiceConnection'
+    azureSubscription: <NEED TO CREATE SERVICE CONNECTION AND USE HERE>
     ScriptType: InlineScript
     Inline: |
      
@@ -25,7 +25,7 @@ steps:
      $paramtemplates = Get-ChildItem .\AlertTemplates -Exclude Main-Generalized-LogAlerts-Template.json
      
      foreach ($paramtemplate in $paramtemplates) { 
-         New-AzResourceGroupDeployment -Name ActivityAlertDeploy -ResourceGroupName Centralized_LogRG -TemplateFile $maintemplate -TemplateParameterFile $paramtemplate -centralizedActivitylogWorkspace $(WORKSPACEID) -actionGroupId $(ACTIONGROUPID)
+         New-AzResourceGroupDeployment -Name ActivityAlertDeploy -ResourceGroupName $(RESOURCEGROUPNAME) -TemplateFile $maintemplate -TemplateParameterFile $paramtemplate -centralizedActivitylogWorkspace $(WORKSPACEID) -actionGroupId $(ACTIONGROUPID)
      }
     azurePowerShellVersion: LatestVersion
   continueOnError: true
