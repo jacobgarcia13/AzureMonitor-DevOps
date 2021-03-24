@@ -1,0 +1,496 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "logicAppName": {
+            "defaultValue": "Alert_Routing",
+            "type": "string"
+        },
+        "logicAppLocation": {
+            "defaultValue": "eastus2",
+            "type": "string"
+        },
+        "miPrincipalID": {
+            "defaultValue": "11110000-0000-0000-0000-111100001111",
+            "type": "string"
+        },
+        "tenantID": {
+            "defaultValue": "00001111-0000-0000-0000-000011110000",
+            "type": "string"
+        },
+        "connectionsOutlookExternalID": {
+            "defaultValue": "/subscriptions/00001111-0000-1111-0000-000011110000/resourceGroups/Centralized_LogRG/providers/Microsoft.Web/connections/outlook",
+            "type": "string"
+        },
+        "managedApiOutlookID": {
+            "defaultValue": "/subscriptions/00001111-0000-1111-0000-000011110000/providers/Microsoft.Web/locations/eastus2/managedApis/outlook",
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('logicAppName')]",
+            "location": "[parameters('logicAppLocation')]",
+            "identity": {
+                "principalId": "[parameters('miPrincipalID')]",
+                "tenantId": "[parameters('tenantID')]",
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "manual": {
+                            "type": "Request",
+                            "kind": "Http",
+                            "inputs": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "alertContext": {
+                                                    "properties": {
+                                                        "AffectedConfigurationItems": {
+                                                            "type": "array"
+                                                        },
+                                                        "AlertType": {
+                                                            "type": "string"
+                                                        },
+                                                        "IncludeSearchResults": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "IncludedSearchResults": {
+                                                            "type": "string"
+                                                        },
+                                                        "LinkToFilteredSearchResultsAPI": {
+                                                            "type": "string"
+                                                        },
+                                                        "LinkToFilteredSearchResultsUI": {
+                                                            "type": "string"
+                                                        },
+                                                        "LinkToSearchResults": {
+                                                            "type": "string"
+                                                        },
+                                                        "LinkToSearchResultsAPI": {
+                                                            "type": "string"
+                                                        },
+                                                        "Operator": {
+                                                            "type": "string"
+                                                        },
+                                                        "ResultCount": {
+                                                            "type": "integer"
+                                                        },
+                                                        "SearchIntervalDurationMin": {
+                                                            "type": "string"
+                                                        },
+                                                        "SearchIntervalEndtimeUtc": {
+                                                            "type": "string"
+                                                        },
+                                                        "SearchIntervalInMinutes": {
+                                                            "type": "string"
+                                                        },
+                                                        "SearchIntervalStartTimeUtc": {
+                                                            "type": "string"
+                                                        },
+                                                        "SearchQuery": {
+                                                            "type": "string"
+                                                        },
+                                                        "SearchResults": {
+                                                            "properties": {
+                                                                "dataSources": {
+                                                                    "items": {
+                                                                        "properties": {
+                                                                            "region": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "resourceId": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "tables": {
+                                                                                "items": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "type": "array"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "resourceId",
+                                                                            "region",
+                                                                            "tables"
+                                                                        ],
+                                                                        "type": "object"
+                                                                    },
+                                                                    "type": "array"
+                                                                },
+                                                                "statistics": {
+                                                                    "properties": {
+                                                                        "query": {
+                                                                            "properties": {
+                                                                                "datasetStatistics": {
+                                                                                    "items": {
+                                                                                        "properties": {
+                                                                                            "tableRowCount": {
+                                                                                                "type": "integer"
+                                                                                            },
+                                                                                            "tableSize": {
+                                                                                                "type": "integer"
+                                                                                            }
+                                                                                        },
+                                                                                        "required": [
+                                                                                            "tableRowCount",
+                                                                                            "tableSize"
+                                                                                        ],
+                                                                                        "type": "object"
+                                                                                    },
+                                                                                    "type": "array"
+                                                                                },
+                                                                                "executionTime": {
+                                                                                    "type": "number"
+                                                                                },
+                                                                                "inputDatasetStatistics": {
+                                                                                    "properties": {
+                                                                                        "extents": {
+                                                                                            "properties": {
+                                                                                                "scanned": {
+                                                                                                    "type": "integer"
+                                                                                                },
+                                                                                                "scannedMaxDatetime": {
+                                                                                                    "type": "string"
+                                                                                                },
+                                                                                                "scannedMinDatetime": {
+                                                                                                    "type": "string"
+                                                                                                },
+                                                                                                "total": {
+                                                                                                    "type": "integer"
+                                                                                                }
+                                                                                            },
+                                                                                            "type": "object"
+                                                                                        },
+                                                                                        "rows": {
+                                                                                            "properties": {
+                                                                                                "scanned": {
+                                                                                                    "type": "integer"
+                                                                                                },
+                                                                                                "total": {
+                                                                                                    "type": "integer"
+                                                                                                }
+                                                                                            },
+                                                                                            "type": "object"
+                                                                                        },
+                                                                                        "rowstores": {
+                                                                                            "properties": {
+                                                                                                "scannedRows": {
+                                                                                                    "type": "integer"
+                                                                                                },
+                                                                                                "scannedValuesSize": {
+                                                                                                    "type": "integer"
+                                                                                                }
+                                                                                            },
+                                                                                            "type": "object"
+                                                                                        },
+                                                                                        "shards": {
+                                                                                            "properties": {
+                                                                                                "queriesGeneric": {
+                                                                                                    "type": "integer"
+                                                                                                },
+                                                                                                "queriesSpecialized": {
+                                                                                                    "type": "integer"
+                                                                                                }
+                                                                                            },
+                                                                                            "type": "object"
+                                                                                        }
+                                                                                    },
+                                                                                    "type": "object"
+                                                                                },
+                                                                                "resourceUsage": {
+                                                                                    "properties": {
+                                                                                        "cache": {
+                                                                                            "properties": {
+                                                                                                "disk": {
+                                                                                                    "properties": {
+                                                                                                        "hits": {
+                                                                                                            "type": "integer"
+                                                                                                        },
+                                                                                                        "misses": {
+                                                                                                            "type": "integer"
+                                                                                                        },
+                                                                                                        "total": {
+                                                                                                            "type": "integer"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    "type": "object"
+                                                                                                },
+                                                                                                "memory": {
+                                                                                                    "properties": {
+                                                                                                        "hits": {
+                                                                                                            "type": "integer"
+                                                                                                        },
+                                                                                                        "misses": {
+                                                                                                            "type": "integer"
+                                                                                                        },
+                                                                                                        "total": {
+                                                                                                            "type": "integer"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    "type": "object"
+                                                                                                },
+                                                                                                "shards": {
+                                                                                                    "properties": {
+                                                                                                        "bypassbytes": {
+                                                                                                            "type": "integer"
+                                                                                                        },
+                                                                                                        "cold": {
+                                                                                                            "properties": {
+                                                                                                                "hitbytes": {
+                                                                                                                    "type": "integer"
+                                                                                                                },
+                                                                                                                "missbytes": {
+                                                                                                                    "type": "integer"
+                                                                                                                },
+                                                                                                                "retrievebytes": {
+                                                                                                                    "type": "integer"
+                                                                                                                }
+                                                                                                            },
+                                                                                                            "type": "object"
+                                                                                                        },
+                                                                                                        "hot": {
+                                                                                                            "properties": {
+                                                                                                                "hitbytes": {
+                                                                                                                    "type": "integer"
+                                                                                                                },
+                                                                                                                "missbytes": {
+                                                                                                                    "type": "integer"
+                                                                                                                },
+                                                                                                                "retrievebytes": {
+                                                                                                                    "type": "integer"
+                                                                                                                }
+                                                                                                            },
+                                                                                                            "type": "object"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    "type": "object"
+                                                                                                }
+                                                                                            },
+                                                                                            "type": "object"
+                                                                                        },
+                                                                                        "cpu": {
+                                                                                            "properties": {
+                                                                                                "kernel": {
+                                                                                                    "type": "string"
+                                                                                                },
+                                                                                                "totalCpu": {
+                                                                                                    "type": "string"
+                                                                                                },
+                                                                                                "user": {
+                                                                                                    "type": "string"
+                                                                                                }
+                                                                                            },
+                                                                                            "type": "object"
+                                                                                        },
+                                                                                        "memory": {
+                                                                                            "properties": {
+                                                                                                "peakPerNode": {
+                                                                                                    "type": "integer"
+                                                                                                }
+                                                                                            },
+                                                                                            "type": "object"
+                                                                                        }
+                                                                                    },
+                                                                                    "type": "object"
+                                                                                }
+                                                                            },
+                                                                            "type": "object"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                },
+                                                                "tables": {
+                                                                    "items": {
+                                                                        "properties": {
+                                                                            "columns": {
+                                                                                "items": {
+                                                                                    "properties": {
+                                                                                        "name": {
+                                                                                            "type": "string"
+                                                                                        },
+                                                                                        "type": {
+                                                                                            "type": "string"
+                                                                                        }
+                                                                                    },
+                                                                                    "required": [
+                                                                                        "name",
+                                                                                        "type"
+                                                                                    ],
+                                                                                    "type": "object"
+                                                                                },
+                                                                                "type": "array"
+                                                                            },
+                                                                            "name": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "rows": {
+                                                                                "items": {
+                                                                                    "items": {
+                                                                                        "type": "string"
+                                                                                    },
+                                                                                    "type": "array"
+                                                                                },
+                                                                                "type": "array"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "name",
+                                                                            "columns",
+                                                                            "rows"
+                                                                        ],
+                                                                        "type": "object"
+                                                                    },
+                                                                    "type": "array"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "SeverityDescription": {
+                                                            "type": "string"
+                                                        },
+                                                        "Threshold": {
+                                                            "type": "integer"
+                                                        },
+                                                        "WorkspaceId": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "essentials": {
+                                                    "properties": {
+                                                        "alertContextVersion": {
+                                                            "type": "string"
+                                                        },
+                                                        "alertId": {
+                                                            "type": "string"
+                                                        },
+                                                        "alertRule": {
+                                                            "type": "string"
+                                                        },
+                                                        "alertTargetIDs": {
+                                                            "items": {
+                                                                "type": "string"
+                                                            },
+                                                            "type": "array"
+                                                        },
+                                                        "configurationItems": {
+                                                            "items": {
+                                                                "type": "string"
+                                                            },
+                                                            "type": "array"
+                                                        },
+                                                        "description": {
+                                                            "type": "string"
+                                                        },
+                                                        "essentialsVersion": {
+                                                            "type": "string"
+                                                        },
+                                                        "firedDateTime": {
+                                                            "type": "string"
+                                                        },
+                                                        "monitorCondition": {
+                                                            "type": "string"
+                                                        },
+                                                        "monitoringService": {
+                                                            "type": "string"
+                                                        },
+                                                        "originAlertId": {
+                                                            "type": "string"
+                                                        },
+                                                        "severity": {
+                                                            "type": "string"
+                                                        },
+                                                        "signalType": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "schemaId": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "actions": {
+                        "For_each": {
+                            "foreach": "@triggerBody()['data']['alertContext']['SearchResults']['tables'][0]?['rows']",
+                            "actions": {
+                                "HTTP": {
+                                    "runAfter": {},
+                                    "type": "Http",
+                                    "inputs": {
+                                        "authentication": {
+                                            "type": "ManagedServiceIdentity"
+                                        },
+                                        "method": "GET",
+                                        "uri": "https://management.azure.com@{item()[0]}providers/Microsoft.Resources/tags/default?api-version=2020-06-01"
+                                    }
+                                },
+                                "Send_an_email_(V2)": {
+                                    "runAfter": {
+                                        "HTTP": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "body": {
+                                            "Body": "<p>@{items('For_each')}</p>",
+                                            "Subject": "Test - Logic App Tagging Info",
+                                            "To": "@{body('HTTP')['properties']['tags']['email']}"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['outlook']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/v2/Mail"
+                                    }
+                                }
+                            },
+                            "runAfter": {},
+                            "type": "Foreach"
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "outlook": {
+                                "connectionId": "[parameters('connectionsOutlookExternalID')]",
+                                "connectionName": "outlook",
+                                "id": "[parameters('managedApiOutlookID')]"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
