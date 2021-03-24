@@ -18,6 +18,14 @@ Sample Azure Monitoring Environment For SQL at Scale Using Azure DevOps and Azur
 
 5. Create Action Group(s) in Resource Group dedicated to monitoring either using ARM templates or Manually
 
+## Routing Alerts by Tags in a Logic App
+A Logic App can be built to respond to alerts from a central Log Analytics workspace. One approach is to leverage tags to determine alert routing. [Managed Identity can be enabled in Logic Apps](https://docs.microsoft.com/en-us/azure/logic-apps/create-managed-service-identity) to support triggers and actions like Graph API calls to fetch tag information. Please note that a system-assigned role as management group reader would be necessary to provide tag visiblity across a central workspace. 
+
+![Logic App](Images\logic_app_route_by_tag_to_email.PNG)
+
+In the example above, tags are encoded with email metadata. The Logic App will parse this information and then send an Outlook email to a designated address contained within the tag. Outlook is one of many [Logic Apps connectors](https://docs.microsoft.com/en-us/connectors/connector-reference/connector-reference-logicapps-connectors) that can be configured to simplify actions and triggers. Additional and/or alternative connectors could be put into place to support steering alerts to the right place.
+
+
 ## License
 
 MIT License
